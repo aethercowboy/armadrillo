@@ -17,6 +17,12 @@
 </head>
 
 <body>
+  <!-- todo - add a form here to customize the drill sheet -->
+  <!-- e.g., number range                                  -->
+  <!--       operators                                     -->
+  <!--       if subtraction, negatives                     -->
+  <!--       if division, decimals                         -->
+  <!--       etc.                                          -->
   <div id="content">
   </div>
   <script type="text/template" id="template">
@@ -32,18 +38,16 @@
           .addClass("row-6");
 
         var txt = template.text();
-        console.log(txt);
 
         var top = Math.floor(Math.random() * 10);
         var bottom = Math.floor(Math.random() * 10);
-        console.log(top, bottom);
 
-        txt = txt.replace("__TOP", top);
-        txt = txt.replace("__BOTTOM", bottom);
-        txt = txt.replace("__OPR", "+");
-        console.log(txt);
+        txt = txt.replace("__TOP", top)
+          .replace("__BOTTOM", bottom)
+          .replace("__OPR", "+");
 
         child.html(txt);
+
         content.append(child);
       }
     });
