@@ -25,33 +25,10 @@
   <!--       etc.                                          -->
   <div id="content">
   </div>
-  <script type="text/template" id="template">
-    $$ \frac{ \begin{matrix} & __TOP \\ __OPR & __BOTTOM \\ \end{matrix} }{} $$
+  <script type="text/TeX" class="template" id="stacked-template">
+    $$ \frac{ \begin{array}{rr} & __TOP \\ __OPR & __BOTTOM \\ \end{array} }{} $$
   </script>
-  <script type="text/javascript">
-    $(function() {
-      var template = $("#template");
-      var content = $("#content");
-
-      for (var i = 0; i < 60; ++i) {
-        var child = $("<div>")
-          .addClass("row-6");
-
-        var txt = template.text();
-
-        var top = Math.floor(Math.random() * 10);
-        var bottom = Math.floor(Math.random() * 10);
-
-        txt = txt.replace("__TOP", top)
-          .replace("__BOTTOM", bottom)
-          .replace("__OPR", "+");
-
-        child.html(txt);
-
-        content.append(child);
-      }
-    });
-  </script>
+  <script type="text/javascript" src="script/armadrillo.js"></script>
 </body>
 
 </html>
