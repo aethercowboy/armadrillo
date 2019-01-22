@@ -52,22 +52,29 @@
                 <option value="line">Line</option>
               </select>
             </div>
-            <div>
-              <label for="allow_dupes" class="label">Allow Duplicates</label>
-              <input type="checkbox" name="allow_dupes" id="allow_dupes" class="hey-listen" />
+
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12 medium-6">
+                <label for="min" class="label">Minimum</label>
+                <input type="number" name="min" id="min" class="hey-listen" value="0" />
+              </div>
+              <div class="cell small-12 medium-6">
+                <label for="max" class="label">Maximum</label>
+                <input type="number" name="max" id="max" class="hey-listen" value="9" />
+              </div>
             </div>
-            <div>
-              <label for="min" class="label">Minimum</label>
-              <input type="number" name="min" id="min" class="hey-listen" value="0" />
+
+            <div class="grid-x grid-margin-x">
+              <div class="cell small-12 medium-6">
+                <label for="count" class="label">Count</label>
+                <input type="number" min="1" name="count" id="count" class="hey-listen" value="60" />
+              </div>
+              <div class="cell small-12 medium-6">
+                <label for="allow_dupes" class="label">Allow Duplicates</label>
+                <input type="checkbox" name="allow_dupes" id="allow_dupes" class="hey-listen" />
+              </div>
             </div>
-            <div>
-              <label for="max" class="label">Maximum</label>
-              <input type="number" name="max" id="max" class="hey-listen" value="9" />
-            </div>
-            <div>
-              <label for="count" class="label">Count</label>
-              <input type="number" min="1" name="count" id="count" class="hey-listen" value="60" />
-            </div>
+
             <div>
               <label for="operator" class="label">Operator</label>
               <select name="operator" id="operator" class="hey-listen" multiple>
