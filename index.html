@@ -43,39 +43,42 @@
       <form id="config-form">
         <h3>Configuration</h3>
         <div class="grid-x grid-margin-x">
-          <div class="cell small-12">
-            <label for="format" class="label">Format</label>
-            <select name="format" id="format" class="hey-listen">
-            <option value="stacked" selected>Stacked</option>
-            <option value="line">Line</option>
-          </select>
-          </div>
-          <div class="cell small-12">
-            <label for="allow_dupes" class="label">Allow Duplicates</label>
-            <input type="checkbox" name="allow_dupes" id="allow_dupes" class="hey-listen" />
-          </div>
-          <div class="cell small-12">
-            <label for="min" class="label">Minimum</label>
-            <input type="number" name="min" id="min" class="hey-listen" value="0" />
-          </div>
-          <div class="cell small-12">
-            <label for="max" class="label">Maximum</label>
-            <input type="number" name="max" id="max" class="hey-listen" value="9" />
-          </div>
-          <div class="cell small-12">
-            <label for="count" class="label">Count</label>
-            <input type="number" min="1" name="count" id="count" class="hey-listen" value="60" />
-          </div>
-          <div class="cell small-12">
-            <label for="operator" class="label">Operator</label>
-            <select name="operator" id="operator" class="hey-listen" multiple>
-            <option value="+" selected>Addition (+)</option>
-            <option value="-">Subtraction (-)</option>
-          </select>
-          </div>
-          <fieldset class="fieldset">
-            <legend>Subtraction Options</legend>
-            <div class="cell small-12">
+          <fieldset class="cell fieldset small-12 medium-6">
+            <legend>General</legend>
+            <div>
+              <label for="format" class="label">Format</label>
+              <select name="format" id="format" class="hey-listen">
+                <option value="stacked" selected>Stacked</option>
+                <option value="line">Line</option>
+              </select>
+            </div>
+            <div>
+              <label for="allow_dupes" class="label">Allow Duplicates</label>
+              <input type="checkbox" name="allow_dupes" id="allow_dupes" class="hey-listen" />
+            </div>
+            <div>
+              <label for="min" class="label">Minimum</label>
+              <input type="number" name="min" id="min" class="hey-listen" value="0" />
+            </div>
+            <div>
+              <label for="max" class="label">Maximum</label>
+              <input type="number" name="max" id="max" class="hey-listen" value="9" />
+            </div>
+            <div>
+              <label for="count" class="label">Count</label>
+              <input type="number" min="1" name="count" id="count" class="hey-listen" value="60" />
+            </div>
+            <div>
+              <label for="operator" class="label">Operator</label>
+              <select name="operator" id="operator" class="hey-listen" multiple>
+                <option value="+" selected>Addition (+)</option>
+                <option value="-">Subtraction (-)</option>
+              </select>
+            </div>
+          </fieldset>
+          <fieldset class="cell fieldset small-12 medium-6">
+            <legend>Subtraction</legend>
+            <div>
               <label for="allow_negatives" class="label">Allow Negatives</label>
               <input type="checkbox" name="allow_negatives" id="allow_negatives" class="hey-listen" />
             </div>
