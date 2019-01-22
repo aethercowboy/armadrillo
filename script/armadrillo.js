@@ -1,80 +1,129 @@
-var settings = {
-  format: "stacked",
-  count: 60,
-  allow_dupes: false,
-  min: 0,
-  max: 9
-};
+var seen = {};
 
-$(function() {
-  var template = $(".template#" + settings.format + "-template");
-  var content = $("#content");
-  var min = settings.min;
-  var max = settings.max;
+function toggleConfig() {
+  var config = $("#configure-content");
+  config.toggle();
+  return false;
+}
+
+function redraw() {
+  seen = {};
+  var form = $("#config-form");
+  var sData = unescape(form.serialize());
+  var aData = sData.split('&');
+  var oData = {};
+
+  $.each(aData, function(idx, val) {
+    val = val.split('=');
+    if (oData[val[0]]) {
+      oData[val[0]] = [oData[val[0]], val[1]];
+    } else {
+      oData[val[0]] = val[1];
+    }
+  });
+
+  var min = oData.min;
+  var max = oData.max;
+
+  console.log(min, max);
 
   var range = max - min + 1;
 
+  console.log(range);
+
   var count = range * range;
 
-  function shuffle(a) {
-    var i = a.length;
-    var j = 0;
-    var temp;
+  console.log(count);
 
-    while (i--) {
-      j = Math.floor(Math.random() * (i +1 ));
+  if (!oData.allow_dupes)
+    oData.count = Math.min(count, oData.count);
 
-      temp = a[i];
-      a[i] = a[j];
-      a[j] = temp;
+  settings = oData;
+
+  $.each(oData, function(name, val) {
+    var $el = $('[name="' + name + '"]'),
+      type = $el.attr('type');
+
+    switch (type) {
+      case 'checkbox':
+        $el.attr('checked', 'checked');
+        break;
+      case 'radio':
+        $el.filter('[value="' + val + '"]').attr('checked', 'checked');
+        break;
+      default:
+        $el.val(val);
+    }
+  });
+
+  var template = $(".template#" + settings.format + "-template");
+  var content = $("#content");
+
+  content.empty();
+
+  function generatePairs(o) {
+    var values = [];
+    for (var j = 0; j < 2; ++j) {
+      var v = Math.floor(Math.random() * range);
+      var x = v + parseInt(min);
+      values.push(x);
     }
 
-    return a;
+    if (!settings.allow_negatives && o == "-") {
+      values = values.sort().reverse();
+    }
+
+    return values;
   }
 
-  var pairs = [];
-
-  for (var i = min; i <= max; ++i) {
-      for (var j = min; j <= max; ++j) {
-        pairs.push([i,j]);
-      }
+  function generateKey(o, vs) {
+    return o + ":" + vs.join(":");
   }
-
-  pairs = shuffle(pairs);
-
-  if (!settings.allow_dupes)
-    settings.count = Math.min(count, settings.count);
 
   function processEquation() {
+    var operator = settings.operator.length > 1 ?
+      settings.operator[Math.floor(Math.random() * settings.operator.length)] :
+      settings.operator;
+
     var child = $("<div>")
+      //.addClass("cell large-2 medium-4 small-6");
       .addClass("row-6");
 
-      var txt = template.text();
+    var txt = template.text();
 
-      var values = [];
+    var values = generatePairs(operator);
 
-      if (settings.allow_dupes) {
-        for (var j = 0; j < 2; ++j) {
-          var x = Math.floor(Math.random() * range) + min;
-          values.push(x);
-        }
-      } else {
-        values = pairs.pop();
+    var key = generateKey(operator, values);
+
+    if (!settings.allow_dupes && seen[key] === true) {
+      while (seen[key] === true) {
+        values = generatePairs();
+        key = generateKey(operator, values);
       }
+    }
 
-      var top = values[0];
-      var bottom = values[1];
+    seen[key] = true;
 
-      txt = txt.replace("__TOP", top)
-        .replace("__BOTTOM", bottom)
-        .replace("__OPR", "+");
+    var top = values[0];
+    var bottom = values[1];
 
-      child.html(txt);
+    txt = txt.replace("__TOP", top)
+      .replace("__BOTTOM", bottom)
+      .replace("__OPR", operator);
 
-      content.append(child);
+    child.html(txt);
+
+    content.append(child);
   }
 
   for (var i = 0; i < settings.count; ++i) {
     processEquation(i);
   }
+
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+}
+
+$(function() {
+  $(".hey-listen").on("change", redraw);
+  redraw();
 });
