@@ -34,7 +34,10 @@
 <body>
   <div id="configure" class="no-print" style="width: 100%;">
     <div class="float-right">
-      <a href="#" class="button" onclick="return toggleConfig();"><i class="fa fa-cog"></i></a>
+      <div class="button-group">
+        <a href="#" class="button" onclick="return redraw();" title="Regenerate"><i class="fa fa-redo"></i></a>
+        <a href="#" class="button" onclick="return toggleConfig();" title="Configure"><i class="fa fa-cog"></i></a>
+      </div>
     </div>
     <!-- todo - add a form here to customize the drill sheet -->
     <!--       if division, decimals                         -->

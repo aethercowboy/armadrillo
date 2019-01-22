@@ -121,6 +121,7 @@ function redraw() {
   }
 
   MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  return false;
 }
 
 $(function() {
