@@ -22,18 +22,16 @@ function redraw() {
     }
   });
 
+  if (oData.operator.length <= 1) {
+    oData.operator = [oData.operator];
+  }
+
   var min = oData.min;
   var max = oData.max;
 
-  console.log(min, max);
-
   var range = max - min + 1;
 
-  console.log(range);
-
   var count = range * range;
-
-  console.log(count);
 
   if (!oData.allow_dupes)
     oData.count = Math.min(count, oData.count);
@@ -61,7 +59,54 @@ function redraw() {
 
   content.empty();
 
+  var allPairs = generateAllPairs(settings);
+
+  function generateAllPairs(settings) {
+    var p = {};
+    if (settings.max - settings.min > 1000) return p;
+
+    var ops = settings.operator;
+
+    for (var i = 0; i < ops.length; ++i) {
+      var op = ops[i];
+
+      p[op] = shuffle(_genAllPairs(op, settings));
+
+      function shuffle(a) {
+        var b, c, d;
+        for (d = a.length - 1; d > 0; d--) {
+          b = Math.floor(Math.random() * (d + 1));
+          c = a[d];
+          a[d] = a[b];
+          a[b] = c;
+        }
+        return a;
+      }
+
+      return p;
+    }
+
+    function _genAllPairs(op, settings) {
+      var p = [];
+      for (var i = settings.min; i <= settings.max; ++i) {
+        for (var j = settings.min; j <= settings.max; ++j) {
+          if (op === "-" && !settings.allow_negatives && i < j) continue;
+          p.push([i, j]);
+        }
+      }
+
+      return p;
+    }
+  }
+
   function generatePairs(o) {
+    if (allPairs[o] != null) {
+      if (allPairs[o].length > 0) {
+        return allPairs[o].pop();
+      } else {
+        return [];
+      }
+    }
     var values = [];
     for (var j = 0; j < 2; ++j) {
       var v = Math.floor(Math.random() * range);
@@ -81,9 +126,7 @@ function redraw() {
   }
 
   function processEquation() {
-    var operator = settings.operator.length > 1 ?
-      settings.operator[Math.floor(Math.random() * settings.operator.length)] :
-      settings.operator;
+    var operator = settings.operator[Math.floor(Math.random() * settings.operator.length)];
 
     var child = $("<div>")
       //.addClass("cell large-2 medium-4 small-6");
@@ -97,15 +140,18 @@ function redraw() {
 
     if (!settings.allow_dupes && seen[key] === true) {
       while (seen[key] === true) {
-        values = generatePairs();
+        values = generatePairs(operator);
         key = generateKey(operator, values);
       }
     }
 
-    seen[key] = true;
+    if (!key.endsWith(":"))
+      seen[key] = true;
 
     var top = values[0];
     var bottom = values[1];
+
+    if (top === undefined || bottom === undefined) return;
 
     txt = txt.replace("__TOP", top)
       .replace("__BOTTOM", bottom)
